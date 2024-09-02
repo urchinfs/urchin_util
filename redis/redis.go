@@ -138,6 +138,19 @@ func (s *RedisStorage) DeleteSet(key string, members []string) error {
 	return nil
 }
 
+func (s *RedisStorage) SMembers(key string) ([]string, error) {
+	members, err := s.client.SMembers(key).Result()
+	if err != nil {
+		return []string{}, err
+	}
+
+	return members, nil
+}
+
+func (s *RedisStorage) SIsMember(key string, member interface{}) bool {
+	return s.client.SIsMember(key, member).Val()
+}
+
 func (s *RedisStorage) ZRange(key string, start, stop int64) ([]string, error) {
 	members, err := s.client.ZRange(key, start, stop).Result()
 	if err != nil {
