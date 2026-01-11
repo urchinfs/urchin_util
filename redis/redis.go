@@ -23,9 +23,11 @@ func NewRedisStorage(endpoints []string, password string, enableCluster bool) *R
 	if enableCluster {
 		client = redis.NewClusterClient(
 			&redis.ClusterOptions{
-				Addrs:       endpoints,
-				Password:    password,
-				DialTimeout: 3 * time.Second,
+				Addrs:        endpoints,
+				Password:     password,
+				DialTimeout:  10 * time.Second,
+				ReadTimeout:  10 * time.Second,
+				WriteTimeout: 10 * time.Second,
 			},
 		)
 	} else if len(endpoints) != 0 {
